@@ -7,5 +7,9 @@
 # To list all registered routes, run the following command:
 #   bin/console debug:router
 
-controllers:
-    resource: routing.controllers
+calculate:
+    path: /calculate
+    controller: App\Controller\ApiController::calculateShipping
+carriers:
+    path: /carriers
+    controller: App\Controller\ApiController::getCarriers

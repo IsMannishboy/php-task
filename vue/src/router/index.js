@@ -4,7 +4,7 @@ import Main from "../components/Main.vue"
 
 const routes = [
   {
-    path: '/',
+    path: '/main',
     name: 'Main',
     component: Main
   }

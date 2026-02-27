@@ -1,7 +1,0 @@
-add middleware and figure out how it works in symfony
-learn vue.js and make simple page
-write dockerfiles
-One container for vue
-One for nginx it will proxy all requests
-One for back where 
-Write unit tests

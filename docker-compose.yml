@@ -1,25 +1,35 @@
 services:
-  back:
+  php-back:
+    image: php-back
+
     build:
       context: ./back
       dockerfile: Dockerfile
    
     ports:
       - "8000:8000"
-  front:
+  php-front:
+    image: php-front
+
     build:
       context: ./vue
       dockerfile: Dockerfile
    
     ports:
       - "5173:5173"
-  nginx:
+  php-nginx:
+    image: php-nginx
+
     build:
       context: ./nginx
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    depends_on:
+      - php-back
+      - php-front
 networks:
   default:
+    external: true
     name: php-task-net
     driver: bridge

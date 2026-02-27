@@ -1,19 +1,34 @@
-FROM php:8.2-cli
+# Берём официальный PHP образ с CLI и нужными расширениями
+FROM php:8.4-cli
 
-WORKDIR /app
+# Устанавливаем системные пакеты и расширения, необходимые для Symfony
+RUN apt-get update && apt-get install -y \
+        git \
+        unzip \
+        libicu-dev \
+        zlib1g-dev \
+        libzip-dev \
+        libonig-dev \
+        libxml2-dev \
+    && docker-php-ext-install intl  zip
 
-# Установим зависимости для Symfony
-RUN apt-get update && apt-get install -y git unzip libicu-dev zlib1g-dev libzip-dev \
-    && docker-php-ext-install intl pdo_mysql zip
-
-# Composer
+# Копируем Composer из официального образа composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Копируем проект
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем только файлы composer.json и composer.lock для кеширования
+COPY composer.json composer.lock ./
+
+# Устанавливаем зависимости (только по composer)
+RUN composer install --no-autoloader --no-scripts --no-interaction
+
+# Копируем весь проект
 COPY . .
 
-# Устанавливаем зависимости PHP
-RUN composer install
+# Генерируем autoload и запускаем post-install скрипты
+RUN composer dump-autoload && composer run-script post-install-cmd
 
 # Открываем порт для dev
 EXPOSE 8000

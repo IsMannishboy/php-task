@@ -1,8 +1,10 @@
 <?php
 
+namespace App\Domain;
 
 class TransCompany implements CarrierInterface
 {
+        
     public function calculateShipping( float $weight): float
     {
         if ($weight <= 10) {
