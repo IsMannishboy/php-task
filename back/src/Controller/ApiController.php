@@ -33,6 +33,8 @@ class ApiController
         }
         if($body['weightKg'] <= 0){
             return new JsonResponse(['error' => 'wrong weight'], 400);
+        }else if(gettype($body['weightKg']) !== 'integer'){
+            return new JsonResponse(['error' => 'wrong type'], 400);
         }
         $cost = $carrier->calculateShipping($body['weightKg']);
 

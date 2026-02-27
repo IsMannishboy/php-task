@@ -69,6 +69,31 @@ class ApiControllerTest extends WebTestCase
 
         $this->assertEquals(10, $data['shippingCost']);
 
+        $client->request(
+            'POST',
+            '/calculate',
+            [],                 
+            [],
+            ['CONTENT_TYPE' => 'application/json'], 
+            json_encode([
+                'carrier' => 'unknown',
+                'weightKg' => 10
+            ])
+        );
+        $this->assertResponseIsSuccessful();
+   
+        $client->request(
+            'POST',
+            '/calculate',
+            [],                 
+            [],
+            ['CONTENT_TYPE' => 'application/json'], 
+            json_encode([
+                'carrier' => 'packgroup',
+                'weightKg' => "safvsd"
+            ])
+        );
+        $this->assertResponseIsSuccessful();
     }
     public function testGetCarriers():void{
         $client = static::createClient();
